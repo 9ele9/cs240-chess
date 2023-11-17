@@ -18,4 +18,6 @@ public interface ChessPosition {
      *         1 codes for the left row
      */
     int getColumn();
+
+    boolean equals(myChessPosition otherPosition);
 }
