@@ -2,7 +2,7 @@ package chess;
 
 import java.util.Objects;
 
-public class myChessMove implements ChessMove{
+public class myChessMove implements ChessMove {
     private final myChessPosition startPosition;
     private final myChessPosition endPosition;
     private ChessPiece.PieceType promotion = null;
@@ -26,7 +26,7 @@ public class myChessMove implements ChessMove{
     @Override
     public boolean equals(Object e){
         if(e.getClass() == getClass()){
-            return ((myChessMove) e).getStartPosition() == getStartPosition() && ((myChessMove) e).getEndPosition() == getEndPosition();
+            return ((myChess.myChessMove) e).getStartPosition() == getStartPosition() && ((myChess.myChessMove) e).getEndPosition() == getEndPosition();
         }else{
             return false;
         }

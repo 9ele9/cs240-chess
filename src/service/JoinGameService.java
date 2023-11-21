@@ -1,10 +1,9 @@
 package service;
 
 import chess.ChessGame;
-import chess_server.User;
 import dataAccess.*;
-import service.requests.JoinGameRequest;
-import service.responses.JoinGameResponse;
+import requests.JoinGameRequest;
+import responses.JoinGameResponse;
 
 import java.sql.SQLException;
 

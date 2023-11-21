@@ -2,7 +2,7 @@ package chess;
 
 import java.util.Objects;
 
-public class myChessPosition implements ChessPosition{
+public class myChessPosition implements ChessPosition {
     int row;
     int column;
     public myChessPosition(int inRow, int inCol){

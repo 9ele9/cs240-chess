@@ -1,7 +1,4 @@
 package server;
-import chess_server.AuthToken;
-import chess_server.Game;
-import chess_server.User;
 import com.google.gson.Gson;
 import dataAccess.AuthDAO;
 import dataAccess.DataAccessException;

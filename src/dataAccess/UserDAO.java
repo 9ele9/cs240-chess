@@ -1,12 +1,10 @@
 package dataAccess;
 
-import chess_server.AuthToken;
 import chess_server.User;
 
 import java.sql.SQLException;
 import java.util.*;
-import java.sql.DriverManager;
-import dataAccess.Database;
+
 /**
  * Does CRUD operations on users.
  */

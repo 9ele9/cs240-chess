@@ -3,8 +3,8 @@ package service;
 import dataAccess.AuthDAO;
 import dataAccess.DataAccessException;
 import dataAccess.GameDAO;
-import service.requests.CreateGameRequest;
-import service.responses.CreateGameResponse;
+import requests.CreateGameRequest;
+import responses.CreateGameResponse;
 
 import java.sql.SQLException;
 

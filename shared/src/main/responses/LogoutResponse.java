@@ -1,10 +1,9 @@
-package service.responses;
-
+package responses;
 /**
  * Returns a response from the server.
  * Includes a message if the request was not fulfilled.
  */
-public class JoinGameResponse{
+public class LogoutResponse {
     /**
      * Failed response message.
      */
@@ -13,11 +12,11 @@ public class JoinGameResponse{
     /**
      * Constructor
      */
-    public JoinGameResponse(){
+    public LogoutResponse(){
         setReturnCode(200);
     }
 
-    public JoinGameResponse(String failure, int error){
+    public LogoutResponse(String failure, int error){
         setMessage(failure);
         setReturnCode(error);
     }
@@ -29,11 +28,9 @@ public class JoinGameResponse{
     public void setMessage(String message) {
         this.message = message;
     }
-
     public int getReturnCode() {
         return returnCode;
     }
-
     public void setReturnCode(int returnCode) {
         this.returnCode = returnCode;
     }

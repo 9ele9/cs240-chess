@@ -1,16 +1,12 @@
 package server.handlers;
 
 import com.google.gson.Gson;
-import service.requests.RegisterRequest;
-import service.responses.RegisterResponse;
+import requests.RegisterRequest;
+import responses.RegisterResponse;
 import spark.Request;
-import spark.Response;
-import spark.Route;
 import spark.Spark;
 import service.RegisterService;
 import chess_server.User;
-
-import java.util.Map;
 
 /**
  * Your Handlers will convert an HTTP request into Java usable objects & data.

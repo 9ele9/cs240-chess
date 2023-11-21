@@ -3,22 +3,22 @@ package chess;
 import java.util.Collection;
 import java.util.HashSet;
 
-public class myChessGame implements ChessGame{
-    TeamColor currTurn;
+public class myChessGame implements ChessGame {
+    ChessGame.TeamColor currTurn;
     myChessBoard game;
     String serialGame;
     public myChessGame(){
-        currTurn = TeamColor.WHITE;
+        currTurn = ChessGame.TeamColor.WHITE;
         game = new myChessBoard();
         serialGame = game.serialize();
     }
     @Override
-    public TeamColor getTeamTurn() {
+    public ChessGame.TeamColor getTeamTurn() {
         return currTurn;
     }
 
     @Override
-    public void setTeamTurn(TeamColor team) {
+    public void setTeamTurn(ChessGame.TeamColor team) {
         currTurn = team;
     }
 
@@ -94,19 +94,19 @@ public class myChessGame implements ChessGame{
                 }
             }
         }else{
-            throw new InvalidMoveException ("Not a valid move");
+            throw new InvalidMoveException("Not a valid move");
         }
 
-        if(getTeamTurn() == TeamColor.WHITE){
-            setTeamTurn(TeamColor.BLACK);
+        if(getTeamTurn() == ChessGame.TeamColor.WHITE){
+            setTeamTurn(ChessGame.TeamColor.BLACK);
         }else{
-            setTeamTurn(TeamColor.WHITE);
+            setTeamTurn(ChessGame.TeamColor.WHITE);
         }
 
     }
 
     @Override
-    public boolean isInCheck(TeamColor teamColor) {
+    public boolean isInCheck(ChessGame.TeamColor teamColor) {
         myChessPosition myKing = null;
         for(int g = 0; g < 8; ++g){
             for(int h = 0; h < 8; ++h){
@@ -138,7 +138,7 @@ public class myChessGame implements ChessGame{
     }
 
     @Override
-    public boolean isInCheckmate(TeamColor teamColor) {
+    public boolean isInCheckmate(ChessGame.TeamColor teamColor) {
         myChessPosition myKing = null;
         Collection<ChessMove> kingMoves = new HashSet<>();
         boolean hasNoEscape = true;
@@ -188,7 +188,7 @@ public class myChessGame implements ChessGame{
     }
 
     @Override
-    public boolean isInStalemate(TeamColor teamColor) {
+    public boolean isInStalemate(ChessGame.TeamColor teamColor) {
         myChessPosition myKing = null;
         Collection<ChessMove> kingMoves = new HashSet<>();
         for(int g = 0; g < 8; ++g){

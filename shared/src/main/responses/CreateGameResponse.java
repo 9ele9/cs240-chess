@@ -1,4 +1,4 @@
-package service.responses;
+package responses;
 /**
  * Returns a response from the server. If successful, includes a gameID.
  * Includes an error message if the game creation request was not fulfilled.

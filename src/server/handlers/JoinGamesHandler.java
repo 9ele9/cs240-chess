@@ -2,8 +2,8 @@ package server.handlers;
 
 import com.google.gson.Gson;
 import service.JoinGameService;
-import service.requests.JoinGameRequest;
-import service.responses.JoinGameResponse;
+import requests.JoinGameRequest;
+import responses.JoinGameResponse;
 import spark.Request;
 import spark.Spark;
 

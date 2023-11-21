@@ -1,5 +1,7 @@
 package chess;
 
+import chess.myChessPosition;
+
 /**
  * Represents a single square position on a chess board
  * 

@@ -1,4 +1,4 @@
-package service.requests;
+package requests;
 
 /**
  * Sends a request to the server with a request to create a game with the specified name.

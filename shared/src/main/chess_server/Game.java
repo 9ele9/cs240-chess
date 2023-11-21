@@ -1,9 +1,7 @@
 package chess_server;
 
-import chess.ChessGame;
 import chess.myChessGame;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;
@@ -59,6 +57,13 @@ public class Game {
         this.gameID = generateID();
         this.whiteUsername = whiteUsername;
         this.blackUsername = blackUsername;
+        this.gameName = gameName;
+        this.game = new myChessGame();
+        this.mySerialGame = game.getSerialGame();
+    }
+
+    public Game(int id, String gameName) {
+        this.gameID = id;
         this.gameName = gameName;
         this.game = new myChessGame();
         this.mySerialGame = game.getSerialGame();
@@ -129,6 +134,16 @@ public class Game {
 
     public void gameStringToObject(String mySerialGame){
         game.serialStringIntoBoard(mySerialGame);
+    }
+
+    @Override
+    public String toString() {
+        return "Game{" +
+                "gameID=" + gameID +
+                ", whiteUsername='" + whiteUsername + '\'' +
+                ", blackUsername='" + blackUsername + '\'' +
+                ", gameName='" + gameName + '\'' +
+                '}';
     }
 
     @Override

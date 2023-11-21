@@ -5,7 +5,6 @@ import chess_server.AuthToken;
 import java.sql.SQLException;
 import java.util.*;
 import java.util.ArrayList;
-import dataAccess.Database;
 
 /**
  * Retrieves Authtoken data from the server.

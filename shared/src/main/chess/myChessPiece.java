@@ -4,30 +4,30 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-public class myChessPiece implements ChessPiece{
-    public PieceType myType;
+public class myChessPiece implements ChessPiece {
+    public ChessPiece.PieceType myType;
     public ChessGame.TeamColor myColor;
 
     public myChessPiece(){
 
     }
-    public myChessPiece(PieceType assignment, ChessGame.TeamColor color){
+    public myChessPiece(ChessPiece.PieceType assignment, ChessGame.TeamColor color){
         myType = assignment;
         myColor = color;
     }
 
     public void typeUpdate(){
-        myType = PieceType.QUEEN;
+        myType = ChessPiece.PieceType.QUEEN;
     }
     public void colorUpdate(ChessGame.TeamColor color){ myColor = color;}
-    public void typeUpdate(PieceType assignment){
+    public void typeUpdate(ChessPiece.PieceType assignment){
         myType = assignment;
     }
     public char getMarker(){
         if(myType==null){
             return '_';
         }
-        if(myType == PieceType.QUEEN){
+        if(myType == ChessPiece.PieceType.QUEEN){
             if(myColor == ChessGame.TeamColor.WHITE){
                 return 'Q';
             }else{
@@ -35,35 +35,35 @@ public class myChessPiece implements ChessPiece{
             }
 
         }
-        if(myType == PieceType.KING){
+        if(myType == ChessPiece.PieceType.KING){
             if(myColor == ChessGame.TeamColor.WHITE){
                 return 'K';
             }else{
                 return 'k';
             }
         }
-        if(myType == PieceType.BISHOP){
+        if(myType == ChessPiece.PieceType.BISHOP){
             if(myColor == ChessGame.TeamColor.WHITE){
                 return 'B';
             }else{
                 return 'b';
             }
         }
-        if(myType == PieceType.ROOK){
+        if(myType == ChessPiece.PieceType.ROOK){
             if(myColor == ChessGame.TeamColor.WHITE){
                 return 'R';
             }else{
                 return 'r';
             }
         }
-        if(myType == PieceType.KNIGHT){
+        if(myType == ChessPiece.PieceType.KNIGHT){
             if(myColor == ChessGame.TeamColor.WHITE){
                 return 'N';
             }else{
                 return 'n';
             }
         }
-        if(myType == PieceType.PAWN){
+        if(myType == ChessPiece.PieceType.PAWN){
             if(myColor == ChessGame.TeamColor.WHITE){
                 return 'P';
             }else{
@@ -79,7 +79,7 @@ public class myChessPiece implements ChessPiece{
     }
 
     @Override
-    public PieceType getPieceType() {
+    public ChessPiece.PieceType getPieceType() {
         return myType;
     }
 
@@ -92,29 +92,29 @@ public class myChessPiece implements ChessPiece{
     @Override
     public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {
         myColor = ((myChessBoard) board).myBoard[myPosition.getRow()][myPosition.getColumn()].getTeamColor();
-        if(((myChessBoard) board).myBoard[myPosition.getRow()][myPosition.getColumn()].getPieceType() == PieceType.PAWN) {
+        if(((myChessBoard) board).myBoard[myPosition.getRow()][myPosition.getColumn()].getPieceType() == ChessPiece.PieceType.PAWN) {
             Pawn myPawn = new Pawn();
             return myPawn.pieceMoves(board, myPosition);
-        }else if(((myChessBoard) board).myBoard[myPosition.getRow()][myPosition.getColumn()].getPieceType() == PieceType.KING) {
-            myType = PieceType.KING;
+        }else if(((myChessBoard) board).myBoard[myPosition.getRow()][myPosition.getColumn()].getPieceType() == ChessPiece.PieceType.KING) {
+            myType = ChessPiece.PieceType.KING;
             King myKing = new King();
             return myKing.pieceMoves(board, myPosition);
-        }else if(((myChessBoard) board).myBoard[myPosition.getRow()][myPosition.getColumn()].getPieceType() == PieceType.QUEEN) {
-            myType = PieceType.QUEEN;
+        }else if(((myChessBoard) board).myBoard[myPosition.getRow()][myPosition.getColumn()].getPieceType() == ChessPiece.PieceType.QUEEN) {
+            myType = ChessPiece.PieceType.QUEEN;
             Queen myQueen = new Queen();
             return myQueen.pieceMoves(board, myPosition);
-        }else if(((myChessBoard) board).myBoard[myPosition.getRow()][myPosition.getColumn()].getPieceType() == PieceType.BISHOP) {
-            myType = PieceType.BISHOP;
+        }else if(((myChessBoard) board).myBoard[myPosition.getRow()][myPosition.getColumn()].getPieceType() == ChessPiece.PieceType.BISHOP) {
+            myType = ChessPiece.PieceType.BISHOP;
             Bishop myBishop = new Bishop();
             return myBishop.pieceMoves(board, myPosition);
         }
-        else if(((myChessBoard) board).myBoard[myPosition.getRow()][myPosition.getColumn()].getPieceType() == PieceType.KNIGHT) {
-            myType = PieceType.KNIGHT;
+        else if(((myChessBoard) board).myBoard[myPosition.getRow()][myPosition.getColumn()].getPieceType() == ChessPiece.PieceType.KNIGHT) {
+            myType = ChessPiece.PieceType.KNIGHT;
             Knight myKnight = new Knight();
             return myKnight.pieceMoves(board, myPosition);
         }
-        else if(((myChessBoard) board).myBoard[myPosition.getRow()][myPosition.getColumn()].getPieceType() == PieceType.ROOK) {
-            myType = PieceType.ROOK;
+        else if(((myChessBoard) board).myBoard[myPosition.getRow()][myPosition.getColumn()].getPieceType() == ChessPiece.PieceType.ROOK) {
+            myType = ChessPiece.PieceType.ROOK;
             Rook myRook = new Rook();
             return myRook.pieceMoves(board, myPosition);
         }else{
@@ -123,20 +123,20 @@ public class myChessPiece implements ChessPiece{
     }
 
     public static class Pawn extends myChessPiece {
-        public PieceType myType;
+        public ChessPiece.PieceType myType;
         public ChessGame.TeamColor myColor;
 
         public Pawn(){
-            myType = PieceType.PAWN;
+            myType = ChessPiece.PieceType.PAWN;
             myColor = ChessGame.TeamColor.WHITE;
-            super.typeUpdate(PieceType.PAWN);
+            super.typeUpdate(ChessPiece.PieceType.PAWN);
 
         }
 
         public Pawn(ChessGame.TeamColor color){
-            myType = PieceType.PAWN;
+            myType = ChessPiece.PieceType.PAWN;
             myColor = color;
-            super.typeUpdate(PieceType.PAWN);
+            super.typeUpdate(ChessPiece.PieceType.PAWN);
             super.colorUpdate(color);
         }
         @Override
@@ -210,19 +210,19 @@ public class myChessPiece implements ChessPiece{
     }
 
     public static class King extends myChessPiece {
-        public PieceType myType;
+        public ChessPiece.PieceType myType;
         public ChessGame.TeamColor myColor;
 
         public King(){
-            myType = PieceType.KING;
+            myType = ChessPiece.PieceType.KING;
             myColor = ChessGame.TeamColor.WHITE;
-            super.typeUpdate(PieceType.KING);
+            super.typeUpdate(ChessPiece.PieceType.KING);
         }
 
         public King(ChessGame.TeamColor color){
-            myType = PieceType.KING;
+            myType = ChessPiece.PieceType.KING;
             myColor = color;
-            super.typeUpdate(PieceType.KING);
+            super.typeUpdate(ChessPiece.PieceType.KING);
             super.colorUpdate(color);
         }
         @Override
@@ -320,19 +320,19 @@ public class myChessPiece implements ChessPiece{
     }
 
     public static class Queen extends myChessPiece{
-        public PieceType myType;
+        public ChessPiece.PieceType myType;
         public ChessGame.TeamColor myColor;
 
         public Queen(){
-            myType = PieceType.QUEEN;
+            myType = ChessPiece.PieceType.QUEEN;
             myColor = ChessGame.TeamColor.WHITE;
-            super.typeUpdate(PieceType.QUEEN);
+            super.typeUpdate(ChessPiece.PieceType.QUEEN);
         }
 
         public Queen(ChessGame.TeamColor color){
-            myType = PieceType.QUEEN;
+            myType = ChessPiece.PieceType.QUEEN;
             myColor = color;
-            super.typeUpdate(PieceType.QUEEN);
+            super.typeUpdate(ChessPiece.PieceType.QUEEN);
             super.colorUpdate(color);
         }
         @Override
@@ -491,19 +491,19 @@ public class myChessPiece implements ChessPiece{
     }
 
     public static class Bishop extends myChessPiece{
-        public PieceType myType;
+        public ChessPiece.PieceType myType;
         public ChessGame.TeamColor myColor;
 
         public Bishop(){
-            myType = PieceType.BISHOP;
+            myType = ChessPiece.PieceType.BISHOP;
             myColor = ChessGame.TeamColor.WHITE;
-            super.typeUpdate(PieceType.BISHOP);
+            super.typeUpdate(ChessPiece.PieceType.BISHOP);
         }
 
         public Bishop(ChessGame.TeamColor color){
-            myType = PieceType.BISHOP;
+            myType = ChessPiece.PieceType.BISHOP;
             myColor = color;
-            super.typeUpdate(PieceType.BISHOP);
+            super.typeUpdate(ChessPiece.PieceType.BISHOP);
             super.colorUpdate(color);
         }
         @Override
@@ -585,19 +585,19 @@ public class myChessPiece implements ChessPiece{
     }
 
     public static class Knight extends myChessPiece{
-        public PieceType myType;
+        public ChessPiece.PieceType myType;
         public ChessGame.TeamColor myColor;
 
         public Knight(){
-            myType = PieceType.KNIGHT;
+            myType = ChessPiece.PieceType.KNIGHT;
             myColor = ChessGame.TeamColor.WHITE;
-            super.typeUpdate(PieceType.KNIGHT);
+            super.typeUpdate(ChessPiece.PieceType.KNIGHT);
         }
 
         public Knight(ChessGame.TeamColor color){
-            myType = PieceType.KNIGHT;
+            myType = ChessPiece.PieceType.KNIGHT;
             myColor = color;
-            super.typeUpdate(PieceType.KNIGHT);
+            super.typeUpdate(ChessPiece.PieceType.KNIGHT);
             super.colorUpdate(color);
         }
         @Override
@@ -650,19 +650,19 @@ public class myChessPiece implements ChessPiece{
     }
 
     public static class Rook extends myChessPiece{
-        public PieceType myType;
+        public ChessPiece.PieceType myType;
         public ChessGame.TeamColor myColor;
 
         public Rook(){
-            myType = PieceType.ROOK;
+            myType = ChessPiece.PieceType.ROOK;
             myColor = ChessGame.TeamColor.WHITE;
-            super.typeUpdate(PieceType.ROOK);
+            super.typeUpdate(ChessPiece.PieceType.ROOK);
         }
 
         public Rook(ChessGame.TeamColor color){
-            myType = PieceType.ROOK;
+            myType = ChessPiece.PieceType.ROOK;
             myColor = color;
-            super.typeUpdate(PieceType.ROOK);
+            super.typeUpdate(ChessPiece.PieceType.ROOK);
             super.colorUpdate(color);
         }
         @Override

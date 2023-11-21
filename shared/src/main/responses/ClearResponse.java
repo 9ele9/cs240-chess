@@ -1,4 +1,4 @@
-package service.responses;
+package responses;
 
 /**
  * Returns a response from the server.

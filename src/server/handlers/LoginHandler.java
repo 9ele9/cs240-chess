@@ -2,12 +2,9 @@ package server.handlers;
 
 import chess_server.User;
 import com.google.gson.Gson;
-import service.RegisterService;
-import service.requests.LoginRequest;
-import service.responses.LoginResponse;
+import requests.LoginRequest;
+import responses.LoginResponse;
 import service.LoginService;
-import service.requests.RegisterRequest;
-import service.responses.RegisterResponse;
 import spark.Request;
 import spark.Spark;
 

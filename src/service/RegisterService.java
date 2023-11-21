@@ -1,11 +1,10 @@
 package service;
 
-import chess_server.User;
 import dataAccess.AuthDAO;
 import dataAccess.DataAccessException;
 import dataAccess.UserDAO;
-import service.requests.RegisterRequest;
-import service.responses.RegisterResponse;
+import requests.RegisterRequest;
+import responses.RegisterResponse;
 
 import java.sql.SQLException;
 import java.util.Objects;

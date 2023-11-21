@@ -1,7 +1,6 @@
-package service.requests;
+package requests;
 
 import chess_server.User;
-import spark.Spark;
 
 /**
  * Sends a request to the server to generate an authtoken based on the submitted credentials (username and password).

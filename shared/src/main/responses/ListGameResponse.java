@@ -1,8 +1,7 @@
-package service.responses;
+package responses;
 
 import chess_server.Game;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 
 /**

@@ -1,6 +1,5 @@
-package service.requests;
+package requests;
 
-import chess_server.AuthToken;
 import chess_server.User;
 
 /**

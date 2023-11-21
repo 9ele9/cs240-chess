@@ -1,9 +1,8 @@
 package service;
 
-import chess_server.AuthToken;
 import dataAccess.AuthDAO;
 import dataAccess.DataAccessException;
-import service.responses.LogoutResponse;
+import responses.LogoutResponse;
 
 import java.sql.SQLException;
 

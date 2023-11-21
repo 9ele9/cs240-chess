@@ -1,13 +1,9 @@
 package dataAccess;
 
 import chess.ChessGame;
-import chess.myChessGame;
-import chess_server.AuthToken;
 import chess_server.Game;
-import chess_server.User;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.HashSet;
 
 /**

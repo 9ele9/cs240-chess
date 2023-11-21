@@ -2,8 +2,8 @@ package service;
 import dataAccess.AuthDAO;
 import dataAccess.DataAccessException;
 import dataAccess.UserDAO;
-import service.requests.LoginRequest;
-import service.responses.LoginResponse;
+import requests.LoginRequest;
+import responses.LoginResponse;
 
 import java.sql.SQLException;
 

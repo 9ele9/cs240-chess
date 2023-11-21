@@ -1,7 +1,6 @@
-package service.responses;
+package responses;
 
 import chess_server.AuthToken;
-import chess_server.User;
 
 /**
  * Returns a response from the server.

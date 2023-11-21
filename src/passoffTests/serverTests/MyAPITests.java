@@ -3,9 +3,12 @@ import chess.ChessGame;
 import chess_server.User;
 import dataAccess.DataAccessException;
 import org.junit.jupiter.api.*;
+import requests.CreateGameRequest;
+import requests.JoinGameRequest;
+import requests.LoginRequest;
+import requests.RegisterRequest;
+import responses.*;
 import service.*;
-import service.requests.*;
-import service.responses.*;
 
 import java.sql.SQLException;
 @SuppressWarnings("unused")

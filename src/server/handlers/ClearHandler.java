@@ -1,12 +1,8 @@
 package server.handlers;
 
-import chess_server.User;
 import com.google.gson.Gson;
 import service.ClearService;
-import service.RegisterService;
-import service.requests.RegisterRequest;
-import service.responses.ClearResponse;
-import spark.Request;
+import responses.ClearResponse;
 import spark.Spark;
 
 public class ClearHandler {
