@@ -19,12 +19,15 @@ public class Server {
     private void run() throws DataAccessException {
         // Specify the port you want the server to listen on
         Spark.port(8080);
+        Spark.webSocket("/connect", WebSocketHandler.class);
 
         // Register a directory for hosting static files
         Spark.externalStaticFileLocation("web");
-
         Database myDB = new Database();
+        WebSocketHandler wsServer = new WebSocketHandler();
         Connection connect = myDB.getConnection();
+        Spark.post("/echo", this::echoBody);
+
 
         // Register handlers for each endpoint using the method reference syntax
         RegisterHandler register = new RegisterHandler();
@@ -35,7 +38,8 @@ public class Server {
         ListGamesHandler listGames = new ListGamesHandler();
         JoinGamesHandler joinGame = new JoinGamesHandler();
 
-        Spark.post("/echo", this::echoBody);
+
+
 
         Spark.post("/name/:name", this::addName);
         Spark.get("/user", this::listNames);

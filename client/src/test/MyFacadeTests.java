@@ -164,6 +164,6 @@ public class MyFacadeTests {
     public void NegCallCreateTest() throws Exception {
         int id = facade.callCreate(new CreateGameRequest("yGame"), "bmdvopwemv");
         HashSet<Game> gameList = facade.callList(existingAuth);
-
+        facade.callClear();
     }
 }

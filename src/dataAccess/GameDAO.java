@@ -5,6 +5,7 @@ import chess_server.Game;
 
 import java.sql.SQLException;
 import java.util.HashSet;
+import java.util.Objects;
 
 /**
  * Does CRUD operations on a game.
@@ -18,11 +19,20 @@ public class GameDAO {
     public void addGame(String name) throws SQLException, DataAccessException {
         var conn = new Database().getConnection();
         boolean isAdded;
+        boolean isAddedTurn;
         Game initializeGame = new Game(name);
         try(var preparedStatement = conn.prepareStatement("INSERT INTO game VALUES (" + initializeGame.getGameID() + ", NULL, NULL, \"" + name + "\", \"" + initializeGame.getMySerialGame() + "\")")){
               var rows = preparedStatement.executeUpdate();
             isAdded = rows > 0;
 
+        }
+        try(var preparedStatement = conn.prepareStatement("INSERT INTO turn VALUES (" + initializeGame.getGameID() + ", \"white\")")){
+            var rows = preparedStatement.executeUpdate();
+            isAddedTurn = rows > 0;
+
+        }
+        if(!(isAdded && isAddedTurn)){
+            throw new SQLException("One or both of game and turn table were not inserted into");
         }
         conn.close();
 
@@ -136,6 +146,27 @@ public class GameDAO {
         }
         conn.close();
     }
+
+    public void removePlayerFromGame(ChessGame.TeamColor color, int gameID) throws DataAccessException, SQLException {
+        var conn = new Database().getConnection();
+        boolean isCreated;
+
+
+        if(color == ChessGame.TeamColor.BLACK){
+            try(var preparedStatement = conn.prepareStatement("UPDATE game SET black=NULL WHERE id =" + gameID)){
+                var rows = preparedStatement.executeUpdate();
+                isCreated = rows > 0;
+
+            }
+        }else if(color == ChessGame.TeamColor.WHITE){
+            try(var preparedStatement = conn.prepareStatement("UPDATE game SET white=NULL WHERE id =" + gameID)){
+                var rows = preparedStatement.executeUpdate();
+                isCreated = rows > 0;
+
+            }
+        }
+        conn.close();
+    }
     /*
     /**
      * deletes a given game from the database
@@ -156,10 +187,50 @@ public class GameDAO {
      * @param newID ID to set
      * @throws DataAccessException
      */
-    /*
-    public void updateGame(Game toEdit, String newID) throws DataAccessException{
+
+    public void makeMove(int gameID, String serialGame, ChessGame.TeamColor requestingColor) throws SQLException, DataAccessException{
+        var conn = new Database().getConnection();
+        boolean isCreated;
+        if(currTurn(gameID) != requestingColor){
+            throw new DataAccessException("It is not your turn!");
+        }
+        try(var preparedStatement = conn.prepareStatement("UPDATE game SET game =\"" + serialGame + "\" WHERE id =" + gameID)){
+                var rows = preparedStatement.executeUpdate();
+                isCreated = rows > 0;
+        }
+        if(isCreated){
+            advanceTurn(gameID);
+        }
+        conn.close();
     }
-    */
+
+    public String getPlayerByColor(int gameID, ChessGame.TeamColor color) throws DataAccessException, SQLException{
+        var conn = new Database().getConnection();
+        Game myGame = new Game();
+        String player = "";
+        if(color == ChessGame.TeamColor.BLACK){
+            try(var preparedStatement = conn.prepareStatement("SELECT black FROM game WHERE id=\"" + gameID + "\"")){
+                var rows = preparedStatement.executeQuery();
+                while(rows.next()){
+                    String black = rows.getString("black");
+                    player = black;
+                }
+            }
+            conn.close();
+        }else if(color == ChessGame.TeamColor.WHITE){
+            try(var preparedStatement = conn.prepareStatement("SELECT white FROM game WHERE id=\"" + gameID + "\"")){
+                var rows = preparedStatement.executeQuery();
+                while(rows.next()){
+                    String white = rows.getString("white");
+                    player = white;
+                }
+            }
+            conn.close();
+        }
+
+        return player;
+    }
+
 
     /**
      * deletes the whole database
@@ -202,6 +273,49 @@ public class GameDAO {
         }
         conn.close();
         return exists;
+    }
+
+    public ChessGame.TeamColor currTurn(int id) throws SQLException, DataAccessException{
+        var conn = new Database().getConnection();
+        boolean exists = false;
+        String color = "";
+        try(var preparedStatement = conn.prepareStatement("SELECT color FROM turn WHERE gameid=\"" + id + "\"")){
+            var rows = preparedStatement.executeQuery();
+            while(rows.next()){
+                color = rows.getString("color");
+                exists = (color != null);
+            }
+        }
+        conn.close();
+        if(exists){
+            if(color.equalsIgnoreCase("black")){
+                return ChessGame.TeamColor.BLACK;
+            }else{
+                return ChessGame.TeamColor.WHITE;
+            }
+        }else{
+            return null;
+        }
+    }
+
+    public void advanceTurn(int gameID) throws SQLException, DataAccessException{
+        ChessGame.TeamColor currColor = currTurn(gameID);
+        String nextColor;
+        if(currColor == ChessGame.TeamColor.BLACK){
+            nextColor = "white";
+        }else if(currColor == ChessGame.TeamColor.WHITE){
+            nextColor = "black";
+        }else{
+            throw new SQLException("Somehow your color has no color");
+        }
+
+        var conn = new Database().getConnection();
+        boolean isCreated;
+        try(var preparedStatement = conn.prepareStatement("UPDATE turn SET color =\"" + nextColor + "\" WHERE gameid =" + gameID)){
+            var rows = preparedStatement.executeUpdate();
+            isCreated = rows > 0;
+        }
+        conn.close();
     }
 
     public void spectator(int id, String username) throws SQLException, DataAccessException{

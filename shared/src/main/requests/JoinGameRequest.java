@@ -25,9 +25,9 @@ public class JoinGameRequest {
     public JoinGameRequest(String color, int id){
         if(color == null){
             setPlayerColor(null);
-        }else if(color.equals("BLACK")){
+        }else if(color.equalsIgnoreCase("BLACK")){
             setPlayerColor(ChessGame.TeamColor.BLACK);
-        }else if(color.equals("WHITE")){
+        }else if(color.equalsIgnoreCase("WHITE")){
             setPlayerColor(ChessGame.TeamColor.WHITE);
         }else{
             setPlayerColor(null);

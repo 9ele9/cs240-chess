@@ -134,6 +134,7 @@ public class Game {
 
     public void gameStringToObject(String mySerialGame){
         game.serialStringIntoBoard(mySerialGame);
+        setMySerialGame(mySerialGame);
     }
 
     @Override

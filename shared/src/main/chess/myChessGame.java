@@ -246,6 +246,10 @@ public class myChessGame implements ChessGame {
         return game;
     }
 
+    public void setSerialGame(String serialGame) {
+        this.serialGame = serialGame;
+    }
+
     public String getSerialGame(){
         return game.serialize();
     }

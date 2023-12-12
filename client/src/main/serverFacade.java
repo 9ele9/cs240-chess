@@ -57,7 +57,8 @@ public class serverFacade {
         http.addRequestProperty("Authorization", auth);
         http.connect();
         http.getResponseMessage();
-        return readResponseBody(http);
+        HashSet<Game> test = readResponseBody(http);
+        return test;
     }
 
     public int callLogout(String auth) throws Exception{
