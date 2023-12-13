@@ -1,6 +1,7 @@
 import WS.ServerMessage;
 import WS.UserGameCommand;
 import chess.ChessGame;
+import chess.InvalidMoveException;
 import com.google.gson.JsonObject;
 import ui.EscapeSequences;
 import com.google.gson.Gson;
@@ -13,17 +14,19 @@ import chess.myChessPosition;
 public class WebSocketClient extends Endpoint{
     public Session session;
     public static String currentGame = "";
+    public static String authToken = "";
 
     public static void run(String auth, int id, ChessGame.TeamColor color, boolean isObserving) throws Exception {
         var ws = new WebSocketClient();
         Scanner scanner = new Scanner(System.in);
+        authToken = auth;
         System.out.print(EscapeSequences.SET_TEXT_COLOR_YELLOW);
         System.out.println("Type \"Help\" for a list of commands.");
         System.out.print("\u001b[38;5;39m\n");
         if(isObserving){
             ws.send(new Gson().toJson(new UserGameCommand.joinObserverCommand(id, auth)));
         }else{
-            ws.send(new Gson().toJson(new UserGameCommand.joinPlayerCommand(id, color)));
+            ws.send(new Gson().toJson(new UserGameCommand.joinPlayerCommand(id, color, auth)));
         }
 
         while (true) {
@@ -33,6 +36,9 @@ public class WebSocketClient extends Endpoint{
                 break;
             }else if(next.equalsIgnoreCase("help")){
                 displayMenu(isObserving);
+            }else if(next.equalsIgnoreCase("resign") && !isObserving){
+                UserGameCommand.resignCommand resignation = new UserGameCommand.resignCommand(id, color, auth);
+                ws.send(new Gson().toJson(resignation));
             }else if(next.equalsIgnoreCase("redraw")){
                 if(currentGame.isEmpty()){
                     //no moves made yet
@@ -58,7 +64,7 @@ public class WebSocketClient extends Endpoint{
                     break;
                 }
 
-            }else if(next.length() < 11){
+            }else if(next.length() < 11 && !isObserving){
                 try{
                     if(next.substring(0,4).equalsIgnoreCase("move")){
                         String[] moveInfo = next.split(" ");
@@ -66,6 +72,26 @@ public class WebSocketClient extends Endpoint{
                             UserGameCommand.makeMoveCommand aMove = new UserGameCommand.makeMoveCommand(parseMove(moveInfo[1],moveInfo[2]), id, auth, color);
                             String gsonTest = new Gson().toJson(aMove);
                             ws.send(gsonTest);
+                        }else{
+                            clientFunctions.printInputError();
+                        }
+                    }
+                }catch(Exception e){
+                    clientFunctions.printInputError();
+                }
+                try{
+                    if(next.substring(0,7).equalsIgnoreCase("options")){
+                        String[] moveInfo = next.split(" ");
+                        if(moveInfo.length == 2){
+                            try{
+                                clientFunctions.printPossibleMoves(color, currentGame, clientFunctions.parsePosition(moveInfo[1]));
+                            }catch(InvalidMoveException e){
+                                String error = e.toString();
+                                System.out.println(error);
+                            }
+
+                        }else{
+                            clientFunctions.printInputError();
                         }
                     }
                 }catch(Exception e){
@@ -88,12 +114,27 @@ public class WebSocketClient extends Endpoint{
             public void onMessage(String message) {
                 ServerMessage initial = new Gson().fromJson(message, ServerMessage.class);
                 String newMessage = clientFunctions.parseServerMessage(initial, message);
+                if(initial.getServerMessageType() == ServerMessage.ServerMessageType.ERROR && Objects.equals(initial.getAuthToken(), authToken)){
+                    System.out.println("\nError: " + newMessage);
+                }
                 if(initial.getServerMessageType() == ServerMessage.ServerMessageType.LOAD_GAME){
                     System.out.println();
                     currentGame = newMessage;
                     clientFunctions.displayBoardWhite(newMessage);
-                }else{
-                    System.out.println("\nNotification: " + newMessage);
+                }else if(initial.getServerMessageType() == ServerMessage.ServerMessageType.NOTIFICATION){
+                    String[] checkJoin = newMessage.split(" ");
+                    if(checkJoin.length > 4){
+                        if(Objects.equals(checkJoin[1], "joined") && Objects.equals(checkJoin[2], "the") && Objects.equals(checkJoin[3], "game")
+                        && Objects.equals(initial.getAuthToken(), authToken)){
+
+                        }else{
+                            System.out.println("\nNotification: " + newMessage);
+                        }
+                    }else{
+                        System.out.println("\nNotification: " + newMessage);
+                    }
+
+
                 }
 
             }
@@ -131,11 +172,11 @@ public class WebSocketClient extends Endpoint{
             System.out.print(EscapeSequences.SET_TEXT_COLOR_RED);
             System.out.print("LEAVE : leave the game\n");
             System.out.print(EscapeSequences.SET_TEXT_COLOR_GREEN);
-            System.out.print("MOVE [a,#] : make a move\n");
+            System.out.print("MOVE [a1] [h8] : make a move\n");
             System.out.print(EscapeSequences.SET_TEXT_COLOR_MAGENTA);
             System.out.print("RESIGN : admit defeat\n");
             System.out.print(EscapeSequences.SET_TEXT_COLOR_WHITE);
-            System.out.print("OPTIONS : highlights legal moves\n");
+            System.out.print("OPTIONS [a1] : highlights legal moves\n");
             System.out.print("\u001b[39;49m");
         }
 
@@ -148,8 +189,8 @@ public class WebSocketClient extends Endpoint{
             int inRowStart = Integer.parseInt(String.valueOf(start.charAt(1))) -1 ;
             int inRowEnd = Integer.parseInt(String.valueOf(end.charAt(1))) -1 ;
 
-            int inColStart = start.charAt(0) - 97;
-            int inColEnd = end.charAt(0) - 97;
+            int inColStart = 104 - start.charAt(0);
+            int inColEnd = 104 - end.charAt(0);
 
             startPos = new myChessPosition(inRowStart, inColStart);
             endPos = new myChessPosition(inRowEnd, inColEnd);

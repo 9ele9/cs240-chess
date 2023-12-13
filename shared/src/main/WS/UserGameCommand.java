@@ -57,10 +57,11 @@ public class UserGameCommand {
         public joinPlayerCommand(){
             commandType = CommandType.JOIN_PLAYER;
         }
-        public joinPlayerCommand(int id, ChessGame.TeamColor color){
+        public joinPlayerCommand(int id, ChessGame.TeamColor color,String auth){
             commandType = CommandType.JOIN_PLAYER;
             gameID = id;
             playerColor = color;
+            authToken = auth;
         }
         int gameID = 0;
         ChessGame.TeamColor playerColor = null;
@@ -175,7 +176,22 @@ public class UserGameCommand {
         public resignCommand(){
             commandType = CommandType.RESIGN;
         }
+        public resignCommand(int id, ChessGame.TeamColor color, String auth){
+            commandType = CommandType.RESIGN;
+            gameID = id;
+            myColor = color;
+            authToken = auth;
+        }
         int gameID = 0;
+        ChessGame.TeamColor myColor;
+
+        public ChessGame.TeamColor getMyColor() {
+            return myColor;
+        }
+
+        public int getGameID() {
+            return gameID;
+        }
 
         @Override
         public String toString() {

@@ -25,6 +25,11 @@ public class ServerMessage {
     public ServerMessageType getServerMessageType() {
         return this.serverMessageType;
     }
+    protected String authToken;
+
+    public String getAuthToken() {
+        return authToken;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -45,14 +50,13 @@ public class ServerMessage {
         public loadGameMessage(){
             serverMessageType = ServerMessageType.LOAD_GAME;
         }
-        public loadGameMessage(String serialGame){
+        public loadGameMessage(String serialGame, String auth){
             serverMessageType = ServerMessageType.LOAD_GAME;
             game = serialGame;
+            authToken = auth;
         }
         String game = "";
-        public String gameLoaded(){
-            return "Game loaded";
-        }
+
 
         public String getGame() {
             return game;
@@ -71,9 +75,10 @@ public class ServerMessage {
         public errorMessage(){
             serverMessageType = ServerMessageType.ERROR;
         }
-        public errorMessage(String message){
+        public errorMessage(String message, String auth){
             serverMessageType = ServerMessageType.ERROR;
             errorMessage = message;
+            authToken = auth;
         }
         String errorMessage = "";
 
@@ -94,9 +99,10 @@ public class ServerMessage {
         public notificationMessage(){
             serverMessageType = ServerMessageType.NOTIFICATION;
         }
-        public notificationMessage(String aMessage){
+        public notificationMessage(String aMessage, String auth){
             serverMessageType = ServerMessageType.NOTIFICATION;
             message = aMessage;
+            authToken = auth;
         }
         String message = "";
 

@@ -87,12 +87,8 @@ public class Client {
                         }else{
                             try{
                                 JoinGameRequest newJoin = new JoinGameRequest(joinGameInfo[1], Integer.parseInt(joinGameInfo[2]));
-                                int code = facade.callJoin(newJoin, auth);
-                                if(code == 200){
-                                    WebSocketClient.run(auth, newJoin.getGameID(), newJoin.getPlayerColor(), false);
-                                }else{
-                                    System.out.print("Could not complete request: error code " + code);
-                                }
+                                facade.callJoin(newJoin, auth);
+                                WebSocketClient.run(auth, newJoin.getGameID(), newJoin.getPlayerColor(), false);
                             }catch(Exception e){
                                 clientFunctions.printInputError();
                             }

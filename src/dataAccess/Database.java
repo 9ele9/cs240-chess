@@ -42,6 +42,7 @@ public class Database {
      * @return Connection
      */
     synchronized public Connection getConnection() throws DataAccessException {
+
         try {
             Connection connection;
             if (connections.isEmpty()) {
