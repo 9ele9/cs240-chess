@@ -57,6 +57,8 @@ public class WebSocketClient extends Endpoint{
 
             }else if(next.equalsIgnoreCase("leave")){
                 if(isObserving){
+                    String test1 = new Gson().toJson(new UserGameCommand.leaveCommand(id, color, auth));
+                    ws.send(test1);
                     break;
                 }else{
                     String test1 = new Gson().toJson(new UserGameCommand.leaveCommand(id, color, auth));
@@ -114,27 +116,14 @@ public class WebSocketClient extends Endpoint{
             public void onMessage(String message) {
                 ServerMessage initial = new Gson().fromJson(message, ServerMessage.class);
                 String newMessage = clientFunctions.parseServerMessage(initial, message);
-                if(initial.getServerMessageType() == ServerMessage.ServerMessageType.ERROR && Objects.equals(initial.getAuthToken(), authToken)){
+                if(initial.getServerMessageType() == ServerMessage.ServerMessageType.ERROR){
                     System.out.println("\nError: " + newMessage);
-                }
-                if(initial.getServerMessageType() == ServerMessage.ServerMessageType.LOAD_GAME){
+                }else if(initial.getServerMessageType() == ServerMessage.ServerMessageType.LOAD_GAME){
                     System.out.println();
                     currentGame = newMessage;
                     clientFunctions.displayBoardWhite(newMessage);
                 }else if(initial.getServerMessageType() == ServerMessage.ServerMessageType.NOTIFICATION){
-                    String[] checkJoin = newMessage.split(" ");
-                    if(checkJoin.length > 4){
-                        if(Objects.equals(checkJoin[1], "joined") && Objects.equals(checkJoin[2], "the") && Objects.equals(checkJoin[3], "game")
-                        && Objects.equals(initial.getAuthToken(), authToken)){
-
-                        }else{
-                            System.out.println("\nNotification: " + newMessage);
-                        }
-                    }else{
-                        System.out.println("\nNotification: " + newMessage);
-                    }
-
-
+                    System.out.println("\nNotification: " + newMessage);
                 }
 
             }

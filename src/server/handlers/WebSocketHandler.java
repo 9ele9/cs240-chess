@@ -65,6 +65,7 @@ public class WebSocketHandler {
                 ChessGame.TeamColor currTurn = gaming.currTurn(newCommand.getGameID());
                 boolean alreadyOver = gaming.isWinner(newCommand.getGameID());
                 boolean moveSuccess = simulateMove(session, game, newCommand.getMove(), userColor, currTurn, newCommand.getGameID(), newCommand.getAuthString(), getActiveSessions());
+                game = gaming.getGameByID(newCommand.getGameID()).getMySerialGame();
                 if(!alreadyOver && moveSuccess){
                     String loadGame = new Gson().toJson(new ServerMessage.loadGameMessage(game, newCommand.getAuthString()));
                     sendToAllClients(loadGame, getActiveSessions());
@@ -246,6 +247,7 @@ public class WebSocketHandler {
 
     private static boolean simulateMove(Session session, String serialBoard, myChessMove move, ChessGame.TeamColor myColor, ChessGame.TeamColor currColor, int gameID, String auth, HashSet<Session> mySessions) throws IOException {
         boolean didMove = false;
+        boolean didTryMove = false;
         ChessGame.TeamColor otherColor = null;
         myChessGame simulation = new myChessGame();
         //simulation.setTeamTurn(color);
@@ -259,14 +261,23 @@ public class WebSocketHandler {
                 String newSerial = simulation.getSerialGame();
                 didMove = gaming.makeMove(gameID, newSerial);
                 //didMove = attemptMove(gaming, gameID, newSerial);
+                didTryMove = true;
             }catch (Exception e) {
                 String err1 = e.toString();
+                if(Objects.equals(err1, "chess.InvalidMoveException: Not a valid move")){
+                    sendToJustClient(session, err1);
+                }
                 System.out.println(err1);
             }
-        }else{
+        }/*else{
             String response = new Gson().toJson(new ServerMessage.errorMessage("It is not your turn", auth));
             sendToJustClient(session, response);
         }
+        if(didTryMove && !didMove){
+            String response = new Gson().toJson(new ServerMessage.errorMessage("Move was not possible", auth));
+            sendToJustClient(session, response);
+        }*/
+
 
 
         if(didMove){
@@ -313,6 +324,9 @@ public class WebSocketHandler {
 
 
             }
+        }else{
+            String failMate = new Gson().toJson(new ServerMessage.errorMessage("Couldn't simulate move for one reason or another", auth));
+            session.getRemote().sendString(failMate);
         }
 
 
